@@ -12,10 +12,17 @@ Wordly is a modern, single-page web app that lets you search for word definition
 - **Responsive design** for desktop and mobile
 - **Accessible UI** with keyboard navigation and ARIA labels
 
-## Getting Started
+
+## Setup
+
+No installation or build step is required. Simply:
 
 1. **Clone or download this repository**
-2. Open `index.html` in your browser — no build step or server required!
+2. Open `index.html` in your web browser
+
+That’s it! The app runs entirely in your browser—no server or dependencies needed.
+
+Project structure:
 
 ```
 wordly/
