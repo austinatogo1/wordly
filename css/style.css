@@ -1,0 +1,563 @@
+/* ============================================================
+   WORDLY — style.css
+   Organised sections:
+   1. CSS Variables & Reset
+   2. Layout
+   3. Header
+   4. Search Form
+   5. Loader
+   6. Error Box
+   7. Result Card
+   8. Meanings & Definitions
+   9. Synonyms / Antonyms Tags
+   10. Source Bar
+   11. Saved Words
+   12. Footer
+   13. Light Theme Override
+   14. Responsive
+============================================================ */
+
+/* ── 1. CSS Variables & Reset ─────────────────────────────────────── */
+:root {
+  --bg:           #0e0e12;
+  --surface:      #16161d;
+  --surface-2:    #1e1e28;
+  --border:       #2a2a38;
+  --accent:       #e8c547;
+  --accent-dim:   #b89e35;
+  --accent-glow:  rgba(232, 197, 71, 0.18);
+  --text:         #f0ede6;
+  --text-muted:   #7a7890;
+  --text-dim:     #4a4860;
+  --red:          #e85447;
+  --green:        #47c4a0;
+  --radius:       14px;
+  --transition:   0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Subtle noise texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* Screen-reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── 2. Layout ────────────────────────────────────────────────────── */
+.container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── 3. Header ────────────────────────────────────────────────────── */
+header {
+  padding: 48px 0 36px;
+  text-align: center;
+  position: relative;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 7vw, 4.2rem);
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.logo span {
+  color: var(--accent);
+  font-style: italic;
+}
+
+.tagline {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 52px;
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── 4. Search Form ───────────────────────────────────────────────── */
+.search-wrapper {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px 6px 6px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  margin-bottom: 32px;
+}
+
+.search-wrapper:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+#search-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  color: var(--text);
+  padding: 10px 0;
+}
+
+#search-input::placeholder {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+#search-btn {
+  background: var(--accent);
+  color: #0e0e12;
+  border: none;
+  padding: 14px 26px;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+#search-btn:hover  { background: var(--accent-dim); }
+#search-btn:active { transform: scale(0.97); }
+#search-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── 5. Loader ────────────────────────────────────────────────────── */
+.loader {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 60px 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+.loader.active { display: flex; }
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── 6. Error Box ─────────────────────────────────────────────────── */
+.error-box {
+  display: none;
+  background: rgba(232, 84, 71, 0.1);
+  border: 1px solid rgba(232, 84, 71, 0.3);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  color: var(--red);
+  font-size: 0.95rem;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.error-box.active { display: flex; }
+.error-box svg    { flex-shrink: 0; }
+
+/* ── 7. Result Card ───────────────────────────────────────────────── */
+#result {
+  animation: fadeUp 0.35s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.word-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.word-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1.05;
+}
+
+.word-phonetic {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+  letter-spacing: 0.04em;
+}
+
+.word-actions {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Icon button (save) */
+.btn-icon {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+
+.btn-icon:hover         { border-color: var(--accent); color: var(--accent); }
+.btn-icon.saved         { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+
+/* Audio button */
+.btn-audio {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 10px 18px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.85rem;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-audio:hover  { border-color: var(--accent); color: var(--accent); }
+.btn-audio.playing {
+  border-color: var(--green);
+  color: var(--green);
+  background: rgba(71, 196, 160, 0.08);
+}
+
+/* ── 8. Meanings & Definitions ────────────────────────────────────── */
+.meanings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.meaning-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: border-color var(--transition);
+}
+
+.pos-tag {
+  display: inline-block;
+  background: var(--accent-glow);
+  border: 1px solid rgba(232, 197, 71, 0.25);
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+
+.definitions-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.def-item {
+  display: flex;
+  gap: 12px;
+}
+
+.def-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  font-weight: 700;
+  min-width: 22px;
+  padding-top: 2px;
+}
+
+.def-text {
+  font-size: 0.97rem;
+  color: var(--text);
+}
+
+.def-example {
+  margin-top: 6px;
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  padding-left: 4px;
+  border-left: 2px solid var(--border);
+}
+
+/* ── 9. Synonyms / Antonyms Tags ──────────────────────────────────── */
+.tags-section {
+  margin-top: 18px;
+}
+
+.tags-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+.tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 5px 13px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── 10. Source Bar ───────────────────────────────────────────────── */
+.source-bar {
+  margin-top: 32px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.source-bar a {
+  color: var(--accent);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.source-bar a:hover {
+  text-decoration: underline;
+}
+
+/* ── 11. Saved Words ──────────────────────────────────────────────── */
+.saved-section {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.saved-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.saved-count {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  font-family: 'DM Sans', sans-serif;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.saved-words-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.saved-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Playfair Display', serif;
+}
+
+.saved-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.saved-chip .remove-chip {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  font-family: 'DM Sans', sans-serif;
+  transition: color var(--transition);
+}
+
+.saved-chip:hover .remove-chip {
+  color: var(--red);
+}
+
+.saved-empty {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  font-style: italic;
+}
+
+/* ── 12. Footer ───────────────────────────────────────────────────── */
+footer {
+  margin-top: 64px;
+  padding: 28px 0 36px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+
+footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+/* ── 13. Light Theme Override ─────────────────────────────────────── */
+body.light {
+  --bg:          #f5f2eb;
+  --surface:     #ffffff;
+  --surface-2:   #f0ede6;
+  --border:      #ddd9ce;
+  --accent:      #b8841e;
+  --accent-dim:  #9a6d15;
+  --accent-glow: rgba(184, 132, 30, 0.12);
+  --text:        #1a1814;
+  --text-muted:  #6a6455;
+  --text-dim:    #b0a898;
+}
+
+/* ── 14. Responsive ───────────────────────────────────────────────── */
+@media (max-width: 560px) {
+  .word-header      { flex-direction: column; }
+  .theme-toggle     { font-size: 0.7rem; padding: 6px 10px; top: 56px; }
+  #search-input     { font-size: 1.05rem; }
+  .meaning-block    { padding: 18px; }
+}

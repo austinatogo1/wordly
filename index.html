@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wordly — Interactive Dictionary</title>
+  <meta name="description" content="Wordly: Search definitions, pronunciations, synonyms and more — all in one place." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="container">
+
+    <!-- ── Header ─────────────────────────────────────────────────────── -->
+    <header>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark theme">
+        ☀ Light
+      </button>
+      <h1 class="logo">Word<span>ly</span></h1>
+      <p class="tagline">Interactive Dictionary &amp; Language Explorer</p>
+    </header>
+
+    <!-- ── Search Form ────────────────────────────────────────────────── -->
+    <form id="search-form" role="search" aria-label="Dictionary search">
+      <div class="search-wrapper">
+        <label for="search-input" class="sr-only">Search for a word</label>
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search a word…"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+          aria-label="Enter a word to search"
+          maxlength="80"
+        />
+        <button type="submit" id="search-btn" aria-label="Search">
+          Search →
+        </button>
+      </div>
+    </form>
+
+    <!-- ── Error Banner ───────────────────────────────────────────────── -->
+    <div class="error-box" id="error-box" role="alert" aria-live="assertive">
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24"
+           stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <span id="error-msg">Something went wrong.</span>
+    </div>
+
+    <!-- ── Loading Spinner ────────────────────────────────────────────── -->
+    <div class="loader" id="loader" aria-live="polite" aria-label="Loading results">
+      <div class="spinner"></div>
+      <span>Looking up…</span>
+    </div>
+
+    <!-- ── Dictionary Result ──────────────────────────────────────────── -->
+    <section id="result" aria-live="polite" aria-label="Dictionary result"></section>
+
+    <!-- ── Saved Words ───────────────────────────────────────────────── -->
+    <section class="saved-section" id="saved-section" aria-label="Saved words">
+      <h2 class="saved-heading">
+        Saved Words
+        <span class="saved-count" id="saved-count">0</span>
+      </h2>
+      <div class="saved-words-wrap" id="saved-words-wrap">
+        <p class="saved-empty" id="saved-empty">
+          No saved words yet. Click ★ to save a word.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Footer ────────────────────────────────────────────────────── -->
+    <footer>
+      <p>
+        Powered by the
+        <a href="https://dictionaryapi.dev/" target="_blank" rel="noopener">
+          Free Dictionary API
+        </a>
+      </p>
+      <p style="margin-top:6px">
+        Built with ♥ for Wordly ·
+        <a href="https://github.com/your-username/wordly" target="_blank" rel="noopener">
+          View on GitHub
+        </a>
+      </p>
+    </footer>
+
+  </div><!-- /container -->
+
+  <!-- JavaScript -->
+  <script src="js/app.js"></script>
+</body>
+</html>
